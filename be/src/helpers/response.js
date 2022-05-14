@@ -1,5 +1,5 @@
 module.exports = {
-  success: (message, data, pagination) => {
+  success: ({ message, data, pagination }) => {
     return {
       message: message ?? "success",
       code: 200,
@@ -9,7 +9,7 @@ module.exports = {
   },
   error: (message, code) => {
     return {
-      message: message ?? "success",
+      message,
       code,
       data: null,
     };

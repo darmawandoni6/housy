@@ -18,7 +18,7 @@ const Files = db.define(
   { freezeTableName: true }
 );
 
-Files.hasOne(Users, { foreignKey: { allowNull: false } });
+Files.hasOne(Users);
 Users.belongsTo(Files);
 
 module.exports = Files;

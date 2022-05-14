@@ -1,4 +1,5 @@
 require("dotenv").config();
+const httpError = require("http-errors");
 const app = require("./src/app");
 const database = require("./src/configs/mysql");
 const response = require("./src/helpers/response");
@@ -46,8 +47,9 @@ app.use("*", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json(response.error(err.status, err.message));
+  const code = err.status || 500;
+  res.status(code);
+  res.json(response.error(err.message, code));
 });
 
 const PORT = process.env.PORT || 5000;
