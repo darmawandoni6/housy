@@ -1,0 +1,31 @@
+{
+  "name": "housy-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darmawandoni6/housy.git"
+  },
+  "author": "darmawandoni6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darmawandoni6/housy/issues"
+  },
+  "homepage": "https://github.com/darmawandoni6/housy#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "formidable": "^2.0.1",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.19.0",
+    "sequelize-cli": "^6.4.1"
+  }
+}
