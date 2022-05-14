@@ -38,7 +38,6 @@ module.exports = {
       const match = compare(password, data.password);
       if (!match) throw httpError.BadRequest("email dan password tidak ada");
 
-      data = data.toJSON();
       delete data.password;
       const token = signToken(data);
 
