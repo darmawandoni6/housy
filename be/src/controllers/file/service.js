@@ -4,14 +4,10 @@ const fs = require("fs");
 module.exports = {
   createProfile: async (req) => {
     try {
-      const data = await File.create(req)
-        .then((res) => res.toJSON())
-        .catch((err) => {
-          throw err.message;
-        });
-      return { data };
+      const data = await File.create(req);
+      return { data: data.toJSON() };
     } catch (error) {
-      return { error };
+      return { error: error.message };
     }
   },
   rollbackFile: async (path) => {

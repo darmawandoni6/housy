@@ -1,10 +1,10 @@
 const httpError = require("http-errors");
 const response = require("../../helpers/response");
-const { create, find, finByid, update, remove } = require("./service");
+const { create, find, findByid, update, remove } = require("./service");
 
 const handleFindById = async (where) => {
   try {
-    const { data, error } = await finByid(where);
+    const { data, error } = await findByid(where);
     if (error) throw httpError.BadRequest(error);
     if (!data) throw httpError.NotFound();
     return { data };
