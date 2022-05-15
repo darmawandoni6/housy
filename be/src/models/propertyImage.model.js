@@ -14,6 +14,11 @@ const PropertyImage = database.define(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
+    folder: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      defaultValue: "/property",
+    },
   },
   { freezeTableName: true }
 );

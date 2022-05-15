@@ -2,6 +2,7 @@ const Property = require("../../models/property.model");
 const Amenities = require("../../models/amenities.model");
 const db = require("../../configs/mysql");
 const { Op } = require("sequelize");
+const PropertyImage = require("../../models/propertyImage.model");
 
 module.exports = {
   create: async (reqProperty, reqAmenities) => {
@@ -109,7 +110,7 @@ module.exports = {
       return { error: error.message };
     }
   },
-  finByid: async (where) => {
+  findByid: async (where) => {
     try {
       const data = await Property.findOne({
         include: [
@@ -118,16 +119,18 @@ module.exports = {
             as: "amenities",
             attributes: { exclude: ["createdAt", "updatedAt", "propertyId"] },
           },
+          {
+            model: PropertyImage,
+            as: "images",
+            attributes: { exclude: ["createdAt", "updatedAt", "propertyId"] },
+          },
         ],
         where,
-      })
-        .then((res) => res?.toJSON() ?? null)
-        .catch((e) => {
-          throw e.message;
-        });
-      return { data };
+      });
+
+      return { data: data?.toJSON() ?? null };
     } catch (error) {
-      return { error };
+      return { error: error.message };
     }
   },
   update: async (id, reqProperty, reqAmenities) => {

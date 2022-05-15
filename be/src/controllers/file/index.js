@@ -39,6 +39,7 @@ module.exports = {
         const { data, error } = await createProfile({
           name: newFilename,
           type: mimetype,
+          folder: nameFormData,
         });
         if (error) {
           const err = await handleRollback(nameFormData, { path, files });

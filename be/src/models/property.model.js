@@ -63,7 +63,13 @@ Amenities.belongsTo(Property, {
   as: "amenities",
 });
 
-Property.hasMany(PropertyImage, { foreignKey: { allowNull: false } });
+Property.hasMany(PropertyImage, {
+  foreignKey: {
+    name: "propertyId",
+    allowNull: false,
+  },
+  as: "images",
+});
 PropertyImage.belongsTo(Property, { foreignKey: { allowNull: false } });
 
 Property.hasOne(Booking, { foreignKey: { allowNull: false } });
