@@ -48,8 +48,20 @@ const Property = database.define(
   { freezeTableName: true }
 );
 
-Property.hasOne(Amenities, { foreignKey: { allowNull: false } });
-Amenities.belongsTo(Property, { foreignKey: { allowNull: false } });
+Property.hasOne(Amenities, {
+  foreignKey: {
+    name: "propertyId",
+    allowNull: false,
+  },
+  as: "amenities",
+});
+Amenities.belongsTo(Property, {
+  foreignKey: {
+    name: "propertyId",
+    allowNull: false,
+  },
+  as: "amenities",
+});
 
 Property.hasMany(PropertyImage, { foreignKey: { allowNull: false } });
 PropertyImage.belongsTo(Property, { foreignKey: { allowNull: false } });
