@@ -2,19 +2,26 @@ const app = require("../app");
 const auth = require("./auth.route");
 const user = require("./user.route");
 const file = require("./file.route");
-const property = require("./property.route");
+const propertyAdmin = require("./property/admin.route");
+const propertyMarketPlace = require("./property/marketplace.route");
 const propertyImage = require("./propertyImage.route");
 
 const jwt = require("../helpers/jwt");
+const basicAuth = require("../helpers/basicAuth");
 
 const apiV1 = "/api/v1";
 const admin = apiV1 + "/admin";
+const marketplace = apiV1 + "/marketplace";
+
+app.use(apiV1, auth);
 
 // all
-app.use(apiV1, auth);
-app.use(apiV1, jwt.verifyAccessToken, user);
-app.use(apiV1, jwt.verifyAccessToken, file);
+app.use(apiV1, user);
+app.use(apiV1, file);
 
 //admin
-app.use(admin, jwt.verifyAccessToken, property);
-app.use(admin, jwt.verifyAccessToken, propertyImage);
+app.use(admin, propertyAdmin);
+app.use(admin, propertyImage);
+
+//marketplace
+app.use(marketplace, propertyMarketPlace);
