@@ -1,13 +1,6 @@
 const httpError = require("http-errors");
 const response = require("../../helpers/response");
-const {
-  create,
-  find,
-  findByid,
-  update,
-  remove,
-  findAdmin,
-} = require("./service");
+const { create, findByid, update, remove, findAdmin } = require("./service");
 
 const handleFindById = async (where) => {
   try {
