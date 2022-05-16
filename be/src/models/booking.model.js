@@ -9,17 +9,22 @@ const Booking = database.define(
   {
     status: {
       type: DataTypes.ENUM,
-      values: ["Waiting Payment", "Waiting Approve", "Approve"],
+      values: ["Cancel", "Waiting Payment", "Waiting Approve", "Approve"],
+      defaultValue: "Waiting Payment",
+      allowNull: false,
     },
-    TypeOfRent: {
+    typeOfRent: {
       type: DataTypes.ENUM,
       values: ["DAY", "MONTH", "YEAR"],
+      allowNull: false,
     },
     checkIn: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.DATE,
+      allowNull: false,
     },
     checkOut: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.DATE,
+      allowNull: false,
     },
     isPayment: {
       type: DataTypes.BOOLEAN,
@@ -27,6 +32,7 @@ const Booking = database.define(
     totalBooking: {
       type: DataTypes.INTEGER,
       defaultValue: 1,
+      allowNull: false,
     },
     invoice: {
       type: DataTypes.STRING(10),
