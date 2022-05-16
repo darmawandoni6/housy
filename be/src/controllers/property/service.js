@@ -24,7 +24,7 @@ module.exports = {
       return { error };
     }
   },
-  find: async (id, params) => {
+  findMarketPlace: async (params) => {
     try {
       let {
         page,
@@ -45,7 +45,6 @@ module.exports = {
         name: {
           [Op.like]: `%${search}%`,
         },
-        userId: id,
       };
 
       if (bedroom > 4) {
@@ -105,6 +104,16 @@ module.exports = {
         limit,
       });
 
+      return { data };
+    } catch (error) {
+      return { error: error.message };
+    }
+  },
+  findAdmin: async (where, params) => {
+    try {
+      let { page, limit } = params;
+      const offset = page * limit - limit;
+      const data = await Property.findAndCountAll({ where, offset, limit });
       return { data };
     } catch (error) {
       return { error: error.message };

@@ -1,6 +1,13 @@
 const httpError = require("http-errors");
 const response = require("../../helpers/response");
-const { create, find, findByid, update, remove } = require("./service");
+const {
+  create,
+  find,
+  findByid,
+  update,
+  remove,
+  findAdmin,
+} = require("./service");
 
 const handleFindById = async (where) => {
   try {
@@ -58,42 +65,26 @@ module.exports = {
   },
   find: async (req, res, next) => {
     try {
-      const { id } = req.payload;
-      console.log(req.payload);
-      let {
-        page,
-        limit,
-        search,
-        bedroom,
-        bathroom,
-        petAllowed,
-        furnished,
-        sharedAccommodation,
-        price,
-      } = req.query;
+      const { id: userId } = req.payload;
+
+      let { page, limit } = req.query;
 
       page = page ? parseInt(page) : 1;
       limit = limit ? parseInt(limit) : 10;
-      bedroom = bedroom ? parseInt(bedroom) : "";
-      bathroom = bathroom ? parseInt(bathroom) : "";
-      price = price ? parseFloat(price) : "";
 
-      let { data, error } = await find(id, {
+      const where = {
+        userId,
+      };
+
+      const { data, error } = await findAdmin(where, {
         page,
         limit,
-        search,
-        bedroom,
-        bathroom,
-        petAllowed,
-        furnished,
-        sharedAccommodation,
-        price,
       });
-
       if (error) throw httpError.BadRequest(error);
 
       const { rows, count } = data;
       const lastPage = count / limit;
+
       return res.status(200).json(
         response.success({
           data: rows,

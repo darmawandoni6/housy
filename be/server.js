@@ -17,12 +17,8 @@ app.get("/", (req, res) => {
 
 (async () => {
   try {
-    await database
-      .authenticate()
-      .then(() => console.log("Database Connected ...."))
-      .catch((e) => {
-        throw e.message;
-      });
+    await database.authenticate();
+    console.log("Database Connected ....");
     // console.log("alter table ----------------------------------------");
     // await Files.sync({ alter: true });
     // await Users.sync({ alter: true });
@@ -43,6 +39,7 @@ app.get("/", (req, res) => {
 require("./src/routes");
 
 app.use("*", (req, res, next) => {
+  console.log(req.baseUrl);
   next(httpError.MethodNotAllowed());
 });
 
