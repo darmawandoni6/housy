@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
 const db = require("../configs/mysql");
+const Booking = require("./booking.model");
 const Users = require("./user.model");
 const { DataTypes } = Sequelize;
 
@@ -24,5 +25,8 @@ const Files = db.define(
 
 Files.hasOne(Users);
 Users.belongsTo(Files);
+
+Files.hasOne(Booking);
+Booking.belongsTo(Files);
 
 module.exports = Files;
