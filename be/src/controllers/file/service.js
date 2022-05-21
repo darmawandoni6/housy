@@ -1,4 +1,4 @@
-const File = require("../../models/file.mode");
+const File = require("../../models/file.model");
 const db = require("../../configs/mysql");
 const fs = require("fs");
 const Booking = require("../../models/booking.model");

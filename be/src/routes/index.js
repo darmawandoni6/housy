@@ -6,6 +6,7 @@ const propertyAdmin = require("./property/admin.route");
 const propertyMarketPlace = require("./property/marketplace.route");
 const propertyImage = require("./propertyImage.route");
 const booking = require("./booking.route");
+const transaction = require("./transaction.route");
 
 const apiV1 = "/api/v1";
 const admin = apiV1 + "/admin";
@@ -20,6 +21,7 @@ app.use(apiV1, file);
 //admin
 app.use(admin, propertyAdmin);
 app.use(admin, propertyImage);
+app.use(admin, transaction);
 
 //marketplace
 app.use(marketplace, propertyMarketPlace);

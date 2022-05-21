@@ -26,9 +26,6 @@ const Booking = database.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    isPayment: {
-      type: DataTypes.BOOLEAN,
-    },
     totalBooking: {
       type: DataTypes.INTEGER,
       defaultValue: 1,

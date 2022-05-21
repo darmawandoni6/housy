@@ -5,7 +5,7 @@ const database = require("./src/configs/mysql");
 const response = require("./src/helpers/response");
 const Amenities = require("./src/models/amenities.model");
 const Booking = require("./src/models/booking.model");
-const Files = require("./src/models/file.mode");
+const File = require("./src/models/file.model");
 const Property = require("./src/models/property.model");
 const PropertyImage = require("./src/models/propertyImage.model");
 const Transaction = require("./src/models/transaction.model");
@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
     await database.authenticate();
     console.log("Database Connected ....");
     // console.log("alter table ----------------------------------------");
-    // await Files.sync({ alter: true });
+    // await File.sync({ alter: true });
     // await Users.sync({ alter: true });
     // await Property.sync({ alter: true });
     // await Amenities.sync({ alter: true });
