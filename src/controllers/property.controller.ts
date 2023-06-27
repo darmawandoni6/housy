@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import createHttpError from "http-errors";
 
-import AmenityModel from "@models/Amenity";
+import AmenityModel from "@models/amenity";
 import PropertyModel from "@models/property";
 import TypeOfRentModel from "@models/typeofRent";
 
