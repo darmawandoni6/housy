@@ -27,8 +27,9 @@ export default {
       };
       const property = await PropertyModel.create(payloadProperty, { transaction: t });
 
-      const payloadTypeOfRent = req.body.typeOfRent.map((item: Array<string>) => ({
-        type: item,
+      const payloadTypeOfRent = req.body.typeOfRent.map((item: { type: string; price: number }) => ({
+        type: item.type,
+        price: item.price,
         propertyId: property.id,
       }));
       await TypeOfRentModel.bulkCreate(payloadTypeOfRent, { transaction: t });
@@ -80,8 +81,9 @@ export default {
       await PropertyModel.update(payloadProperty, { where: { id: req.params.id, userId: payload.id }, transaction: t });
 
       await TypeOfRentModel.destroy({ where: { propertyId: property.id }, transaction: t });
-      const payloadTypeOfRent = req.body.typeOfRent.map((item: Array<string>) => ({
-        type: item,
+      const payloadTypeOfRent = req.body.typeOfRent.map((item: { type: string; price: number }) => ({
+        type: item.type,
+        price: item.price,
         propertyId: property.id,
       }));
       await TypeOfRentModel.bulkCreate(payloadTypeOfRent, { transaction: t });
@@ -146,7 +148,7 @@ export default {
         include: [
           {
             model: TypeOfRentModel,
-            attributes: ["id", "type"],
+            attributes: ["id", "type", "price", "isSoldOut"],
           },
           {
             model: AmenityModel,

@@ -8,6 +8,8 @@ export interface TypeOfRentAtributes {
   id: number;
   type: string;
   propertyId: number;
+  price: number;
+  isSoldOut: boolean;
 }
 
 type TypeOfRentCreationAttributes = Optional<TypeOfRentAtributes, "id">;
@@ -26,6 +28,15 @@ const TypeOfRentModel = sequelize.define<TypeOfRentInstance>("typeOfRent", {
   type: {
     allowNull: false,
     type: DataTypes.ENUM("day", "month", "year"),
+  },
+  price: {
+    allowNull: false,
+    defaultValue: 0,
+    type: DataTypes.BIGINT,
+  },
+  isSoldOut: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   propertyId: {
     allowNull: false,

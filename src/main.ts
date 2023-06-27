@@ -40,7 +40,7 @@ app.use(errorHandler);
     // await RoleModel.sync({force: true})
     // await UserModel.sync({force: true})
     // await PropertyModel.sync({ force: true });
-    // await TypeOfRentModel.sync({ force: true });
+    // await TypeOfRentModel.sync({ alter: true });
     // await AmenityModel.sync({ force: true });
 
     app.listen(port, () => {
