@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import authRouter from "@routes/auth";
 import propertyRouter from "@routes/property";
 import roleRouter from "@routes/role";
+import userRouter from "@routes/user";
 
 import { errorHandler } from "@utils/handleError";
 import app from "@utils/server";
@@ -22,6 +23,7 @@ app.use("/", authRouter);
 const v1 = "/api-v1";
 app.use(v1, roleRouter);
 app.use(v1, propertyRouter);
+app.use(v1, userRouter);
 
 // handling error
 app.use((req, res, next) => {
