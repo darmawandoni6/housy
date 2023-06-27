@@ -1,6 +1,7 @@
 import createHttpError from "http-errors";
 
 import authRouter from "@routes/auth";
+import propertyRouter from "@routes/property";
 import roleRouter from "@routes/role";
 
 import { errorHandler } from "@utils/handleError";
@@ -20,6 +21,7 @@ app.use("/", authRouter);
 
 const v1 = "/api-v1";
 app.use(v1, roleRouter);
+app.use(v1, propertyRouter);
 
 // handling error
 app.use((req, res, next) => {
@@ -33,8 +35,11 @@ app.use(errorHandler);
 (async () => {
   try {
     await sequelize.authenticate();
-    // await RoleModel.sync({ alter: true });
-    // await UserModel.sync({ alter: true });
+    // await RoleModel.sync({force: true})
+    // await UserModel.sync({force: true})
+    // await PropertyModel.sync({ force: true });
+    // await TypeOfRentModel.sync({ force: true });
+    // await AmenityModel.sync({ force: true });
 
     app.listen(port, () => {
       console.log(`[Server]: I am running at http://localhost:${port}`);

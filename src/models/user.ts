@@ -7,11 +7,16 @@ import RoleModel, { RoleAtributes } from "./role";
 export interface UserAttributes {
   id: number;
   username: string;
+  fullName: string;
+  email: string;
   password: string;
+  gender: string;
+  phone: string;
+  address: string;
   roleId: number;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+type UserCreationAttributes = Optional<UserAttributes, "id">;
 interface UserInstance extends Model<UserAttributes, UserCreationAttributes>, UserAttributes {
   role?: RoleAtributes;
   createdAt?: Date;
@@ -29,8 +34,25 @@ const UserModel = sequelize.define<UserInstance>("user", {
     allowNull: false,
     type: DataTypes.STRING,
   },
+  fullName: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+  email: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
   password: {
     allowNull: false,
+    type: DataTypes.STRING,
+  },
+  gender: {
+    type: DataTypes.ENUM("male", "female"),
+  },
+  phone: {
+    type: DataTypes.STRING,
+  },
+  address: {
     type: DataTypes.STRING,
   },
   roleId: {
