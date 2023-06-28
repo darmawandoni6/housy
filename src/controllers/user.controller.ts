@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import createHttpError from "http-errors";
 
+import RoleModel from "@models/role";
 import UserModel from "@models/user";
 
 import bcrypt from "@utils/bcrypt";
@@ -45,6 +46,7 @@ export default {
       const user = await UserModel.findOne({
         where: { id: payload.id },
         attributes: { exclude: ["password"] },
+        include: [{ model: RoleModel, attributes: ["name", "status"] }],
       });
       if (!user) {
         next(createHttpError.NotFound("User not found."));

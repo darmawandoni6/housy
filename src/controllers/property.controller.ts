@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 
 import createHttpError from "http-errors";
+import { Op } from "sequelize";
 
 import AmenityModel from "@models/amenity";
 import PropertyModel from "@models/property";
 import TypeOfRentModel from "@models/typeofRent";
 
-import { ResponseBody } from "@utils/env.t";
+import { AmenityWhere, MarkeplaceQueryParam, PropertyWhere, ResponseBody, TypeOfRentWhere } from "@utils/env.t";
 
 import sequelize from "@database/sequelize";
 
@@ -176,7 +177,127 @@ export default {
         include: [
           {
             model: TypeOfRentModel,
-            attributes: ["id", "type"],
+            attributes: ["id", "type", "price"],
+          },
+          {
+            model: AmenityModel,
+            attributes: {
+              exclude: ["propertyId", "createdAt", "updatedAt"],
+            },
+          },
+        ],
+      });
+      const response: ResponseBody = {
+        status: 200,
+        message: "success get by id",
+        data: property,
+      };
+      res.send(response);
+    } catch (error: any) {
+      next(createHttpError.BadRequest(error.message));
+    }
+  },
+  marketplaceAll: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const propertyWhere: PropertyWhere = {};
+      const amenityWhere: AmenityWhere = {};
+      const typeOfRentWhere: TypeOfRentWhere = {};
+
+      const query: MarkeplaceQueryParam = {
+        page: parseInt(req.query.page as string, 10),
+        limit: parseInt(req.query.limit as string, 10),
+        typeOfRent: req.query.typeOfRent as string,
+        bathroom: parseInt(req.query.bathroom as string, 10),
+        bedroom: parseInt(req.query.bedroom as string, 10),
+        furnished: req.query.furnished as string,
+        petAllowed: req.query.petAllowed as string,
+        sharedAccomodation: req.query.sharedAccomodation as string,
+        price: parseInt(req.query.price as string, 10),
+        search: req.query.search as string,
+      };
+
+      // PropertyModel
+      if (query.bathroom) {
+        if (query.bathroom < 5) {
+          propertyWhere.bathroom = query.bathroom;
+        } else {
+          propertyWhere.bathroom = { [Op.gte]: query.bathroom };
+        }
+      }
+      if (query.bedroom) {
+        if (query.bedroom < 5) {
+          propertyWhere.bedroom = query.bedroom;
+        } else {
+          propertyWhere.bedroom = { [Op.gte]: query.bedroom };
+        }
+      }
+      if (query.search) {
+        propertyWhere.name = { [Op.like]: `%${query.search.toLocaleLowerCase()}%` };
+      }
+
+      // AmenityModel
+      if (query.furnished) amenityWhere.furnished = query.furnished === "true";
+      if (query.petAllowed) amenityWhere.petAllowed = query.petAllowed === "true";
+      if (query.sharedAccomodation) amenityWhere.sharedAccomodation = query.sharedAccomodation === "true";
+
+      // TypeOfRentModel
+      if (query.typeOfRent) {
+        typeOfRentWhere.type = { [Op.in]: query.typeOfRent.split(",") };
+      }
+      if (query.price) {
+        typeOfRentWhere.price = { [Op.lte]: query.price };
+      }
+
+      const property = await PropertyModel.findAndCountAll({
+        offset: (query.page - 1) * query.limit,
+        limit: query.limit,
+        distinct: true,
+        where: {
+          ...propertyWhere,
+        },
+        include: [
+          {
+            model: AmenityModel,
+            attributes: {
+              exclude: ["propertyId", "createdAt", "updatedAt"],
+            },
+            where: {
+              ...amenityWhere,
+            },
+          },
+          {
+            model: TypeOfRentModel,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+            where: { isSoldOut: false, ...typeOfRentWhere },
+          },
+        ],
+      });
+      const response: ResponseBody = {
+        status: 200,
+        message: "Succes get all",
+        data: property.rows,
+        pagination: {
+          page: query.page,
+          limit: query.limit,
+          totalPage: Math.ceil(property.count / query.limit),
+          count: property.count,
+        },
+      };
+      res.send(response);
+    } catch (error: any) {
+      next(createHttpError.BadRequest(error.message));
+    }
+  },
+  marketplaceById: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const property = await PropertyModel.findOne({
+        where: { id: req.params.id },
+        include: [
+          {
+            model: TypeOfRentModel,
+            attributes: ["id", "type", "price"],
           },
           {
             model: AmenityModel,
