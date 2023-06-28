@@ -12,21 +12,27 @@ export default {
     });
     return token;
   },
-  verifyAccessToken: (req: Request, res: Response, next: NextFunction) => {
-    if (!req.cookies) {
+  verifyAccessTokenOwner: (req: Request, res: Response, next: NextFunction) => {
+    const { token } = req.cookies;
+
+    if (!token) {
       next(createHttpError.Unauthorized());
       return;
     }
 
-    const { token } = req.cookies;
-
-    jwt.verify(token, process.env.ACCESS_TOKEN as string, async (err: any, payload: any) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN as string, (err: any, payload: any) => {
       if (err) {
         const message = err.name === "JsonWebTokenError" ? "Unauthorized" : err.message;
         next(createHttpError.Unauthorized(message));
         return;
       }
 
+      const { roles } = payload;
+      const find = roles.find((item: { name: string }) => item.name === "owner");
+      if (!find) {
+        next(createHttpError.Unauthorized());
+        return;
+      }
       res.locals.payload = payload;
       next();
     });

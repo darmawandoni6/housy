@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from "sequelize";
 
 import sequelize from "@database/sequelize";
 
-import RoleModel, { RoleAtributes } from "./role";
+import { RoleAtributes } from "./role";
 
 export interface UserAttributes {
   id: number;
@@ -13,12 +13,11 @@ export interface UserAttributes {
   gender: string;
   phone: string;
   address: string;
-  roleId: number;
 }
 
-type UserCreationAttributes = Optional<UserAttributes, "id">;
+type UserCreationAttributes = Optional<UserAttributes, "id" | "gender" | "phone" | "address">;
 interface UserInstance extends Model<UserAttributes, UserCreationAttributes>, UserAttributes {
-  role?: RoleAtributes;
+  roles?: RoleAtributes;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -55,13 +54,6 @@ const UserModel = sequelize.define<UserInstance>("user", {
   address: {
     type: DataTypes.STRING,
   },
-  roleId: {
-    allowNull: false,
-    type: DataTypes.INTEGER,
-  },
 });
-
-RoleModel.hasOne(UserModel, { foreignKey: "roleId" });
-UserModel.belongsTo(RoleModel);
 
 export default UserModel;

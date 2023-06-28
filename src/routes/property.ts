@@ -8,12 +8,12 @@ const propertyRouter = expres.Router();
 
 propertyRouter
   .route("/property")
-  .get(jwt.verifyAccessToken, propertyController.findAll)
-  .post(jwt.verifyAccessToken, propertyController.create);
+  .get(jwt.verifyAccessTokenOwner, propertyController.findAll)
+  .post(jwt.verifyAccessTokenOwner, propertyController.create);
 propertyRouter
   .route("/property/:id")
-  .get(jwt.verifyAccessToken, propertyController.findById)
-  .put(jwt.verifyAccessToken, propertyController.edit)
-  .delete(jwt.verifyAccessToken, propertyController.remove);
+  .get(jwt.verifyAccessTokenOwner, propertyController.findById)
+  .put(jwt.verifyAccessTokenOwner, propertyController.edit)
+  .delete(jwt.verifyAccessTokenOwner, propertyController.remove);
 
 export default propertyRouter;

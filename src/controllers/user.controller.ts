@@ -13,7 +13,7 @@ export default {
       const { payload } = res.locals;
       const user = await UserModel.findOne({
         where: { id: payload.id },
-        attributes: { exclude: ["password", "roleId"] },
+        attributes: { exclude: ["password"] },
       });
       if (!user) {
         next(createHttpError.NotFound("User not found."));
@@ -44,7 +44,7 @@ export default {
       const { payload } = res.locals;
       const user = await UserModel.findOne({
         where: { id: payload.id },
-        attributes: { exclude: ["password", "roleId"] },
+        attributes: { exclude: ["password"] },
       });
       if (!user) {
         next(createHttpError.NotFound("User not found."));

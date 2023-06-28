@@ -8,8 +8,8 @@ const userRouter = expres.Router();
 
 userRouter
   .route("/user")
-  .put(jwt.verifyAccessToken, userController.update)
-  .get(jwt.verifyAccessToken, userController.findByid);
-userRouter.put("/user/change-password", jwt.verifyAccessToken, userController.changePassword);
+  .put(jwt.verifyAccessTokenOwner, userController.update)
+  .get(jwt.verifyAccessTokenOwner, userController.findByid);
+userRouter.put("/user/change-password", jwt.verifyAccessTokenOwner, userController.changePassword);
 
 export default userRouter;

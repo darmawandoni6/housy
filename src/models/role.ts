@@ -2,10 +2,17 @@ import { DataTypes, Model, Optional } from "sequelize";
 
 import sequelize from "@database/sequelize";
 
+import UserModel from "./user";
+
+export enum Role {
+  owner,
+  buyer,
+}
 export interface RoleAtributes {
   id: number;
-  name: string;
+  name: Role;
   status: boolean;
+  userId: number;
 }
 
 type RoleCreationAttributes = Optional<RoleAtributes, "id">;
@@ -23,12 +30,21 @@ const RoleModel = sequelize.define<RoleInstance>("role", {
   },
   name: {
     allowNull: false,
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM,
+    values: ["owner", "buyer"],
   },
   status: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
+  userId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
   },
 });
+
+UserModel.hasMany(RoleModel, { foreignKey: "userId" });
+RoleModel.belongsTo(UserModel, { foreignKey: "userId" });
 
 export default RoleModel;

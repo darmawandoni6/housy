@@ -37,11 +37,11 @@ app.use(errorHandler);
 (async () => {
   try {
     await sequelize.authenticate();
-    // await RoleModel.sync({force: true})
-    // await UserModel.sync({force: true})
-    // await PropertyModel.sync({ force: true });
-    // await TypeOfRentModel.sync({ alter: true });
-    // await AmenityModel.sync({ force: true });
+    // await RoleModel.sync({ force: true });
+    // await UserModel.sync({ force: true });
+    // await PropertyModel.sync();
+    // await TypeOfRentModel.sync();
+    // await AmenityModel.sync();
 
     app.listen(port, () => {
       console.log(`[Server]: I am running at http://localhost:${port}`);
