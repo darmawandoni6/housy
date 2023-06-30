@@ -27,12 +27,12 @@ export default {
         return;
       }
 
-      const { roles } = payload;
-      const find = roles.find((item: { name: string }) => item.name === "owner");
-      if (!find) {
-        next(createHttpError.Unauthorized());
-        return;
-      }
+      // const { roles } = payload;
+      // const find = roles.find((item: { name: string }) => item.name === "owner");
+      // if (!find) {
+      //   next(createHttpError.Unauthorized());
+      //   return;
+      // }
       res.locals.payload = payload;
       next();
     });

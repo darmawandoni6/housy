@@ -3,6 +3,7 @@ import express, { Express } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import env from "dotenv";
+import fileUpload from "express-fileupload";
 import logger from "morgan";
 
 env.config();
@@ -19,5 +20,12 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  fileUpload({
+    limits: {
+      fileSize: 5 * 1024 * 1024,
+    },
+  }),
+);
 
 export default app;

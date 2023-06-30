@@ -1,6 +1,7 @@
 import createHttpError from "http-errors";
 
 import authRouter from "@routes/auth";
+import imageFileRouter from "@routes/imageFile";
 import propertyRouter from "@routes/property";
 import roleRouter from "@routes/role";
 import userRouter from "@routes/user";
@@ -24,6 +25,7 @@ const v1 = "/api-v1";
 app.use(v1, roleRouter);
 app.use(v1, propertyRouter);
 app.use(v1, userRouter);
+app.use(v1, imageFileRouter);
 
 // handling error
 app.use((req, res, next) => {
@@ -37,8 +39,9 @@ app.use(errorHandler);
 (async () => {
   try {
     await sequelize.authenticate();
-    // await RoleModel.sync({ force: true });
-    // await UserModel.sync({ force: true });
+    // await ImageFileModel.sync({ alter: true });
+    // await RoleModel.sync({ alter: true });
+    // await UserModel.sync({ alter: true });
     // await PropertyModel.sync();
     // await TypeOfRentModel.sync();
     // await AmenityModel.sync();
