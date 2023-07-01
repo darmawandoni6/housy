@@ -4,7 +4,9 @@ import createHttpError from "http-errors";
 import { Op } from "sequelize";
 
 import AmenityModel from "@models/amenity";
+import ImageFileModel from "@models/imageFile";
 import PropertyModel from "@models/property";
+import PropertyImageModel from "@models/propertyImage";
 import TypeOfRentModel from "@models/typeofRent";
 
 import { AmenityWhere, MarkeplaceQueryParam, PropertyWhere, ResponseBody, TypeOfRentWhere } from "@utils/env.t";
@@ -43,6 +45,9 @@ export default {
       };
 
       await AmenityModel.create(payloadAmenity, { transaction: t });
+
+      const payloadImage = req.body.images.map((item: number) => ({ fileId: item, propertyId: property.id }));
+      await PropertyImageModel.create(payloadImage, { transaction: t });
 
       await t.commit();
 
@@ -94,8 +99,11 @@ export default {
         petAllowed: req.body.amenity.petAllowed,
         sharedAccomodation: req.body.amenity.sharedAccomodation,
       };
-
       await AmenityModel.update(payloadAmenity, { where: { propertyId: property.id }, transaction: t });
+
+      await PropertyImageModel.destroy({ where: { propertyId: property.id }, transaction: t });
+      const payloadImage = req.body.images.map((item: number) => ({ fileId: item }));
+      await PropertyImageModel.update(payloadImage, { where: { propertyId: property.id }, transaction: t });
 
       t.commit();
 
@@ -185,8 +193,19 @@ export default {
               exclude: ["propertyId", "createdAt", "updatedAt"],
             },
           },
+          {
+            model: PropertyImageModel,
+            attributes: ["id"],
+            include: [
+              {
+                model: ImageFileModel,
+                attributes: ["id", "fileUrl"],
+              },
+            ],
+          },
         ],
       });
+
       const response: ResponseBody = {
         status: 200,
         message: "success get by id",
@@ -272,6 +291,16 @@ export default {
             },
             where: { isSoldOut: false, ...typeOfRentWhere },
           },
+          {
+            model: PropertyImageModel,
+            attributes: ["id"],
+            include: [
+              {
+                model: ImageFileModel,
+                attributes: ["id", "fileUrl"],
+              },
+            ],
+          },
         ],
       });
       const response: ResponseBody = {
@@ -304,6 +333,16 @@ export default {
             attributes: {
               exclude: ["propertyId", "createdAt", "updatedAt"],
             },
+          },
+          {
+            model: PropertyImageModel,
+            attributes: ["id"],
+            include: [
+              {
+                model: ImageFileModel,
+                attributes: ["id", "fileUrl"],
+              },
+            ],
           },
         ],
       });

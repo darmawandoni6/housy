@@ -16,29 +16,47 @@ export default {
         return;
       }
 
-      const profile = req.files.profile as UploadedFile;
-
-      let create;
+      const { profile, property } = req.files;
 
       const regex = /image\/*/;
+      let payload;
 
       if (profile) {
-        const { truncated, mimetype } = profile;
+        const { truncated, mimetype, data } = profile as UploadedFile;
         if (!truncated && regex.test(mimetype)) {
-          create = await ImageFileModel.create({
-            file: profile.data,
+          payload = {
+            file: data,
             type: "profile",
             fileUrl: crypto.randomUUID(),
-          });
+          };
         } else {
-          next(createHttpError.BadRequest());
+          next(createHttpError.BadRequest("Size to large or file only image"));
+          return;
+        }
+      } else if (property) {
+        const { truncated, mimetype, data } = property as UploadedFile;
+        if (!truncated && regex.test(mimetype)) {
+          payload = {
+            file: data,
+            type: "property",
+            fileUrl: crypto.randomUUID(),
+          };
+        } else {
+          next(createHttpError.BadRequest("Size to large or file only image"));
           return;
         }
       }
 
+      if (!payload) {
+        next(createHttpError.BadRequest("Request failed."));
+        return;
+      }
+      const create = await ImageFileModel.create(payload);
       if (!create) {
         next();
+        return;
       }
+
       const response: ResponseBody = {
         status: 200,
         message: "Upload file success",

@@ -2,6 +2,7 @@ import { DataTypes, Model, Optional } from "sequelize";
 
 import sequelize from "@database/sequelize";
 
+import { PropertyImageAtributes } from "./propertyImage";
 import UserModel from "./user";
 
 export interface PropertyAtributes {
@@ -17,6 +18,7 @@ export interface PropertyAtributes {
 
 type PropertyCreationAttributes = Optional<PropertyAtributes, "id">;
 interface PropertyInstance extends Model<PropertyAtributes, PropertyCreationAttributes>, PropertyAtributes {
+  propertyImages?: PropertyImageAtributes;
   createdAt?: Date;
   updatedAt?: Date;
 }

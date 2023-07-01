@@ -39,10 +39,11 @@ app.use(errorHandler);
 (async () => {
   try {
     await sequelize.authenticate();
+    // await PropertyImageModel.sync({ alter: true });
     // await RoleModel.sync({ alter: true });
     // await UserModel.sync({ alter: true });
     // await ImageFileModel.sync({ alter: true });
-    // await PropertyModel.sync();
+    // await PropertyModel.sync({ alter: true });
     // await TypeOfRentModel.sync();
     // await AmenityModel.sync();
 
