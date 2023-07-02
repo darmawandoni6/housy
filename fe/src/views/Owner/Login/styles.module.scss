@@ -1,0 +1,17 @@
+.Login {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .card {
+    width: 560px;
+    border-radius: 10px;
+    padding: 55px 85px;
+    border: none;
+  }
+  h1 {
+    font-size: 30px;
+    line-height: 1.2;
+    margin-bottom: 32px;
+  }
+}

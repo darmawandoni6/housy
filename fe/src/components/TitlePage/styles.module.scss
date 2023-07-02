@@ -1,0 +1,13 @@
+.TitlePage {
+  margin: auto;
+  height: 120px;
+  max-width: 1440px;
+  display: flex;
+  align-items: center;
+  h1 {
+    color: #000;
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 22px;
+  }
+}
